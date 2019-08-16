@@ -3,15 +3,15 @@ package com.saidus.lightecom.web;
 import com.saidus.lightecom.dao.ProductRepository;
 import com.saidus.lightecom.entities.Product;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @RestController
+@CrossOrigin("*")
 public class CatalogueRestControler {
 
     private ProductRepository productRepository;
@@ -26,5 +26,16 @@ public class CatalogueRestControler {
         return Files.readAllBytes(Paths.get(System.getProperty("user.home")
                 + "/ecom-photos/products/" + p.getPhotoName()));
 
+    }
+
+    @PostMapping(path = "/uploadPhoto/{id}")
+    public void uploadPhoto(@RequestParam MultipartFile file, @PathVariable Long id) throws IOException {
+        Product p = productRepository.findById(id).get();
+        // p.setPhotoName(file.getOriginalFilename());
+        p.setPhotoName(id+".jpg");
+        Files.write(Paths.get(System.getProperty("user.home")
+                +"/ecom-photos/products/"+p.getPhotoName()), file.getBytes());
+
+        productRepository.save(p);
     }
 }
