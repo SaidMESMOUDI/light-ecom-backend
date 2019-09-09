@@ -31,11 +31,13 @@ public class CatalogueRestControler {
     @PostMapping(path = "/uploadPhoto/{id}")
     public void uploadPhoto(@RequestParam MultipartFile file, @PathVariable Long id) throws IOException {
         Product p = productRepository.findById(id).get();
-        // p.setPhotoName(file.getOriginalFilename());
-        p.setPhotoName(id+".jpg");
+        p.setPhotoName(file.getOriginalFilename());
+        // p.setPhotoName(id+".jpg");
         Files.write(Paths.get(System.getProperty("user.home")
                 +"/ecom-photos/products/"+p.getPhotoName()), file.getBytes());
 
         productRepository.save(p);
     }
+
+
 }

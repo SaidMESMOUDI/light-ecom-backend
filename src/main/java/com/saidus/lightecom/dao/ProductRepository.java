@@ -20,7 +20,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // public List<Product> findByNameContains(@Param("kw") String kw);
 
 // on peut aussi utilisé des requetes HQL :
-    // @RestResource(path = "/productsByKeyword")
-    // @Query("select p from Product p where p.name like :x")
-    // public List<Product> chercherParMotCle(@Param("x") String mc);
+    /*
+    @RestResource(path = "/productsByKeyword")
+    @Query("select p from Product p where p.name like :x")
+    public List<Product> chercherParMotCle(@Param("x") String mc);
+    */
+
+    @RestResource(path = "/promotionalProducts")
+    public List<Product> findByPromotionIsTrue();
+
+    @RestResource(path = "/availableProducts")
+    public List<Product> findByAvailableIsTrue();
+
+
 }
